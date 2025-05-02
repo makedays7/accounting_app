@@ -53,8 +53,8 @@ project_root/
 ├─ input.py                           # 「入力系」機能をまとめる
 │   ├─ input_journal_entry()
 │   ├─ input_compound_journal_entry()
+│   ├─ check_saved_entries　#現状はcheck_save_entries.pyにある
 │   └─ input_closing_entry()
-
 ├─ ledger.py                          # 元帳関連
 │   ├─ input_ledger_entry()
 │   └─ export_ledgers_to_PDF()/show_ledgers()
@@ -72,18 +72,18 @@ project_root/
 │   ├─ show_financial_reports()
 │   ├─ show_financial_analysis()
 │   └─ （show_ledgers もこちらに入れてもOK）
-├─ db_utils.py                       # DB系（ユーザー操作以外）
+├─ db_utils.py                        # DB系（ユーザー操作以外）
 │   ├─ get_accounts_code_list()
 │   └─ update_accounts_name()
-├─ db_operations.py                  # DB系（ユーザーの操作に関するもの） 
+├─ db_operations.py                   # DB系（ユーザーの操作に関するもの） 
 │   ├─ get_next_entry_num()
 │   ├─ save_compound_journal_entry()
 │   ├─ fetch_journal_data()
 │   ├─ load_trial_balance()
 │   ├─ load_income_statement()
 │   └─ load_balance_sheet()
-├─ create_tables.py　　　　　　　　　　 # 最初のテーブル作成
-├─ csv_to_accounts.py                # CSVをaccountsテーブルに変換 
+├─ create_tables.py　　　　　　　　　　  # 最初のテーブル作成
+├─ csv_to_accounts.py                 # CSVをaccountsテーブルに変換 
 └─ config.py     
 '''
 
