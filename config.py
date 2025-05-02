@@ -49,7 +49,7 @@ FUNCTION_NAMES = {
 # ディレクトリ構造
 '''
 project_root/
-├─ main.py                            # エントリポイント
+├─ app_main.py                        # エントリポイント
 ├─ input.py                           # 「入力系」機能をまとめる
 │   ├─ input_journal_entry()
 │   ├─ input_compound_journal_entry()
