@@ -2,6 +2,9 @@
 
 import streamlit as st
 import os
+
+from setuptools.command.easy_install import easy_install
+
 import config
 
 # ───────────────────────────────────────────
@@ -16,16 +19,21 @@ def login_screen():
         if os.path.exists(logo_path):
             st.image(logo_path, width=100)
     with col_title:
-        st.markdown("<h1 style='text-align: center;'>会計ソフト ログイン</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center;'>簡単会計 ログイン</h1>", unsafe_allow_html=True)
 
     st.markdown("---")
 
     # ログインボタン（押したらメイン画面へ遷移）
-    if st.button("ログイン"):
-        st.session_state.page = "main_menu"
-        return
-
-
+    col_login, col_signup = st.columns([1,1])
+    with col_login:
+        sub_col1, sub_col2, sub_col3 = st.columns([1,2,1])
+        with sub_col2:
+            if st.button("ログイン"):
+                st.session_state.page = "main_menu"
+                return
+    with col_signup:
+        if st.button("サインアップ（初めての方はこちら）"):
+            pass
 
     # フッター
     st.markdown("---")
@@ -62,7 +70,9 @@ def main_menu_screen():
         st.button("CSVインポート", disabled=True)
     with cat2:
         st.subheader("期中処理")
-        st.button("仕訳入力", disabled=True)
+        if st.button("仕訳入力"):
+            st.session_state.page = "input_journal_entry"
+            return
         st.button("元帳表示", disabled=True)
         st.button("パターン登録／表示", disabled=True)
     with cat3:
@@ -74,6 +84,17 @@ def main_menu_screen():
     st.markdown("---")
     st.markdown("© 2025 Your Company Name")
 
+# ───────────────────────────────────────────
+# アプリ本体：ページ遷移制御
+# ───────────────────────────────────────────
+def input_journal_entry():
+    st.set_page_config(page_title="仕訳入力 - 会計ソフト", layout="wide")
+    cal1, cal2 = st.columns([1,1])
+    with cal1:
+        st.button("複合入力", disabled=True)
+    with cal2:
+        st.button("元帳入力", disabled=True)
+
 
 # ───────────────────────────────────────────
 # アプリ本体：ページ遷移制御
@@ -83,9 +104,16 @@ def main():
     if "page" not in st.session_state:
         st.session_state.page = "login"
 
+    page = st.session_state.page
+
     # ページ切り替え
-    if st.session_state.page == "login":
+    if page == "login":
         login_screen()
+    elif page == "main_menu":
+        main_menu_screen()
+    # 仕訳入力画面へ
+    elif page == "input_journal_entry":
+        input_journal_entry()
     else:
         main_menu_screen()
 

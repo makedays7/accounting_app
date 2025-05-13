@@ -33,7 +33,7 @@ cursor.execute('''
 CREATE TABLE IF NOT EXISTS tax_category(
     tax_category_id INTEGER PRIMARY KEY,
     tax_category_name TEXT,
-    tax_rate DECIMAL 
+    tax_rate REAL 
     )
 ''')
 conn.commit()
@@ -117,9 +117,9 @@ CREATE TABLE IF NOT EXISTS journal_lines(
 ''')
 conn.commit()
 
-# journal_pattern_headersテーブルの作成
+# journal_patternsテーブルの作成
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS journal_pattern_headers (
+CREATE TABLE IF NOT EXISTS journal_patterns (
     pattern_num INTEGER PRIMARY KEY,
     pattern_type INTEGER,
     pattern_name TEXT
@@ -127,9 +127,9 @@ CREATE TABLE IF NOT EXISTS journal_pattern_headers (
 ''')
 conn.commit()
 
-# journal_pattern_linesテーブルの作成
+# journal_pattern_detailsテーブルの作成
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS journal_pattern_lines (
+CREATE TABLE IF NOT EXISTS journal_pattern_details (
     pattern_num INTEGER NOT NULL,
     line_num INTEGER NOT NULL,
     debit_account_id INTEGER,
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS journal_pattern_lines (
     credit_note TEXT,
     client_id INTEGER,
     PRIMARY KEY(pattern_num, line_num),
-    FOREIGN KEY(pattern_num) REFERENCES journal_pattern_headers(pattern_num),
+    FOREIGN KEY(pattern_num) REFERENCES journal_patterns(pattern_num),
     FOREIGN KEY(debit_account_id) REFERENCES accounts(accounts_id),
     FOREIGN KEY(debit_sub_account_id) REFERENCES sub_accounts(sub_accounts_id),
     FOREIGN KEY(credit_account_id) REFERENCES accounts(accounts_id),
