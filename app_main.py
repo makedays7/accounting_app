@@ -1,5 +1,6 @@
 # app_main.py
-
+from layout import render_login_layout, render_layout
+from input import input_journal_entry, input_compound_journal_entry
 import streamlit as st
 import os
 
@@ -11,89 +12,45 @@ import config
 # 画面 1: ログイン画面
 # ───────────────────────────────────────────
 def login_screen():
-    st.set_page_config(page_title="ログイン - 会計ソフト", layout="centered")
-    # ヘッダー（ロゴ＋タイトル）
-    col_logo, col_title, _ = st.columns([1, 3, 1])
-    with col_logo:
-        logo_path = os.path.join("assets", "logo.png")
-        if os.path.exists(logo_path):
-            st.image(logo_path, width=100)
-    with col_title:
-        st.markdown("<h1 style='text-align: center;'>簡単会計 ログイン</h1>", unsafe_allow_html=True)
+    def content():
+        col_login, col_signup = st.columns([1, 1])
+        with col_login:
+            sub_col1, sub_col2, sub_col3 = st.columns([1, 2, 1])
+            with sub_col2:
+                if st.button("ログイン"):
+                    st.session_state.page = "main_menu"
+                    return
+        with col_signup:
+            if st.button("サインアップ（初めての方はこちら）"):
+                pass
 
-    st.markdown("---")
-
-    # ログインボタン（押したらメイン画面へ遷移）
-    col_login, col_signup = st.columns([1,1])
-    with col_login:
-        sub_col1, sub_col2, sub_col3 = st.columns([1,2,1])
-        with sub_col2:
-            if st.button("ログイン"):
-                st.session_state.page = "main_menu"
-                return
-    with col_signup:
-        if st.button("サインアップ（初めての方はこちら）"):
-            pass
-
-    # フッター
-    st.markdown("---")
-    st.markdown("© 2025 Your Company Name")
+    render_login_layout("簡単会計 ログイン", content)
 
 
 # ───────────────────────────────────────────
 # 画面 2: メインメニュー画面
 # ───────────────────────────────────────────
 def main_menu_screen():
-    st.set_page_config(page_title="メインメニュー - 会計ソフト", layout="wide")
+    def content():
+        cat1, cat2, cat3 = st.columns(3)
+        with cat1:
+            st.subheader("設定")
+            st.button("会社情報入力", disabled=True)
+            st.button("勘定科目登録", disabled=True)
+            st.button("CSVインポート", disabled=True)
+        with cat2:
+            st.subheader("期中処理")
+            if st.button("仕訳入力"):
+                st.session_state.page = "input_journal_entry"
+                return
+            st.button("元帳表示", disabled=True)
+            st.button("パターン登録／表示", disabled=True)
+        with cat3:
+            st.subheader("決算処理")
+            st.button("決算書表示", disabled=True)
+            st.button("決算締め（次期繰越）", disabled=True)
 
-    # ヘッダー
-    col1, col2, col3 = st.columns([1, 4, 1])
-    with col1:
-        logo_path = os.path.join("assets", "logo.png")
-        if os.path.exists(logo_path):
-            st.image(logo_path, width=80)
-    with col2:
-        company_name = getattr(config, "COMPANY_NAME", "サンプル会社")
-        fiscal_year = getattr(config, "FISCAL_YEAR", "2025/03")
-        st.markdown(f"### {company_name}　|　決算期: {fiscal_year}")
-    with col3:
-        st.markdown("[ログアウト](#)", unsafe_allow_html=True)
-
-    st.markdown("---")
-
-    # ３つのカテゴリーを横並びで表示
-    cat1, cat2, cat3 = st.columns(3)
-    with cat1:
-        st.subheader("設定")
-        st.button("会社情報入力", disabled=True)
-        st.button("勘定科目登録", disabled=True)
-        st.button("CSVインポート", disabled=True)
-    with cat2:
-        st.subheader("期中処理")
-        if st.button("仕訳入力"):
-            st.session_state.page = "input_journal_entry"
-            return
-        st.button("元帳表示", disabled=True)
-        st.button("パターン登録／表示", disabled=True)
-    with cat3:
-        st.subheader("決算処理")
-        st.button("決算書表示", disabled=True)
-        st.button("決算締め（次期繰越）", disabled=True)
-
-    # フッター
-    st.markdown("---")
-    st.markdown("© 2025 Your Company Name")
-
-# ───────────────────────────────────────────
-# アプリ本体：ページ遷移制御
-# ───────────────────────────────────────────
-def input_journal_entry():
-    st.set_page_config(page_title="仕訳入力 - 会計ソフト", layout="wide")
-    cal1, cal2 = st.columns([1,1])
-    with cal1:
-        st.button("複合入力", disabled=True)
-    with cal2:
-        st.button("元帳入力", disabled=True)
+    render_login_layout("簡単会計 メインメニュー", content)
 
 
 # ───────────────────────────────────────────
@@ -111,9 +68,10 @@ def main():
         login_screen()
     elif page == "main_menu":
         main_menu_screen()
-    # 仕訳入力画面へ
     elif page == "input_journal_entry":
         input_journal_entry()
+    elif page == "input_compound_journal_entry":
+        input_compound_journal_entry()
     else:
         main_menu_screen()
 
