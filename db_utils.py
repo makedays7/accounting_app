@@ -3,7 +3,7 @@
 import sqlite3
 import config
 
-def get_accounts_code_list():
+def get_accounts_id_list():
     """
     Streamlit の selectbox に渡すリストを返す。
     'コード 名称' の形式の文字列リストを想定。
@@ -11,7 +11,7 @@ def get_accounts_code_list():
     conn = sqlite3.connect(config.JOURNAL_DATA_FILE)
     cursor = conn.cursor()
     cursor.execute("""
-        SELECT accounts_code_id, accounts_name
+        SELECT accounts_id, accounts_name
         FROM accounts
         ORDER BY accounts_sort_order
     """)

@@ -2,7 +2,7 @@ import streamlit as st
 import sqlite3
 import config
 from layout import render_layout
-from db_utils import get_accounts_code_list
+from db_utils import get_accounts_id_list
 from datetime import date
 from input_logic import (
     init_rows, add_row, remove_row, calculate_totals,
@@ -29,7 +29,7 @@ def input_journal_entry():
 def input_compound_journal_entry():
     def content():
         st.header("複合仕訳入力")
-        accounts_list = get_accounts_code_list()
+        accounts_list = get_accounts_id_list()
         entry_date = st.date_input("日付", value=date.today(), key="entry_date")
 
         init_rows()

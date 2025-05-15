@@ -6,7 +6,11 @@ import config
 
 def set_page_config_once(page_title="会計ソフト", layout="wide", icon="💼"):
     if not hasattr(st.session_state, "_page_configured"):
-        st.set_page_config(page_title=page_title, layout=layout, page_icon=icon)
+        st.set_page_config(
+            page_title=page_title,
+            layout=layout,
+            page_icon=icon,
+            initial_sidebar_state="collapsed")
         st.session_state._page_configured = True
 
 
